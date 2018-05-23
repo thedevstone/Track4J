@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Giulianini/Track4J.svg?branch=develop)](https://travis-ci.org/Giulianini/Track4J)
+
 # Track4J
 
 ## A simple framework for body tracking in Java.
