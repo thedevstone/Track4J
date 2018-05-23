@@ -5,7 +5,7 @@ package track4j.sensor;
 
 /**
  * The @link{Sensor} class. It rapresents a general sensor that can be attached to the framework.
- * <p/>
+ * <p>
  * Sensors may be Kinect, LipMotion ecc. If your sensor is not present please contact me.
  */
 public interface Sensor {
@@ -14,7 +14,7 @@ public interface Sensor {
      *
      * @throws SensorException
      *             if the sensor encurres in problems during starting phase.
-     * 
+     *
      * @throws IllegalSensorStateException
      *             if sensor is started outside recognition
      */
