@@ -1,5 +1,9 @@
 [![Build Status](https://travis-ci.org/Giulianini/Track4J.svg?branch=develop)](https://travis-ci.org/Giulianini/Track4J)
 
+
+[![PyPI - License](https://img.shields.io/github/license/Giulianini/Track4J.svg)](https://github.com/Giulianini/Track4J/blob/master/LICENSE.txt)
+
+
 # Track4J
 
 ## A simple framework for body tracking in Java.
