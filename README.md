@@ -1,6 +1,6 @@
-#Track4J
+# Track4J
 
-##A simple framework for body tracking in Java.
+## A simple framework for body tracking in Java.
 
 **Supported sensors:** 
 
