@@ -12,8 +12,6 @@ buildscript {
 	ext.project_license = 'The Apache Software License, Version 2.0' // the full license name
     ext.project_license_tag = 'Apache-2.0' // the license tag name
     ext.project_license_url = 'https://www.apache.org/licenses/LICENSE-2.0.txt' // link to the license
-    
-	ext.kotlin_version = "1.0.3"
 	
 	repositories {
 	    // Use jcenter for resolving your dependencies.
@@ -49,22 +47,9 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.java
-            groupId project_group
-            artifactId project_artifact
-            version project_version
-            artifact sourcesJar
-            artifact javadocJar
-        }
-    }
-}
-
 bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_API_KEY')
+    user = bintray_user
+    key = bintray_key
     publications = ['maven']
     pkg {
         repo = 'maven'
@@ -79,12 +64,28 @@ bintray {
         version {
             name = project_version
             vcsTag = project_version
+            released = new Date()
             gpg {
                 sign = true
             }
         }
     }
 }
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            groupId project_group
+            artifactId project_artifact
+            version project_version
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+}
+
 
 repositories {
     mavenCentral()
@@ -96,7 +97,7 @@ dependencies {
 	compile fileTree(dir: 'libs', include: '*.jar')
 	
     // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api 'org.apache.commons:commons-math3:3.6.1'
+    implementation 'org.apache.commons:commons-math3:3.6.1'
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:23.0'
     // Use JUnit test framework
