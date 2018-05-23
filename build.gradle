@@ -5,9 +5,9 @@ buildscript {
     ext.project_description = 'A description of your project'
     
 	ext.project_name = "Track4J"
-	ext.project_group = "it.unibo.track4j.Track4J"
-	ext.project_artifact = "Track4J"
-	ext.project_version = "1.0.0"
+	ext.project_group = "it.unibo.track4j"
+	ext.project_artifact = "track4j"
+	ext.project_version = "0.0.1"
 	
 	ext.project_license = 'The Apache Software License, Version 2.0' // the full license name
     ext.project_license_tag = 'Apache-2.0' // the license tag name
@@ -47,6 +47,15 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
@@ -82,6 +91,7 @@ publishing {
             version project_version
             artifact sourcesJar
             artifact javadocJar
+            artifact fatJar
         }
     }
 }
