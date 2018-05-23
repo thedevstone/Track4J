@@ -1,0 +1,14 @@
+image: java:8
+pipelines:
+  default:
+    - step:
+        caches:
+        - apt
+        - gradle
+        script:
+        - apt-get update && apt-get install -y openjfx
+        - bash ./gradlew build
+        deployment: test
+definitions:
+  caches:
+    apt: /var/cache/apt/archives
