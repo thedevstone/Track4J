@@ -14,16 +14,26 @@
  * limitations under the License.
  *******************************************************************************/
 
-package track4j.core.recognition;
+package track4j.core.tracking;
 
+import track4j.core.codification.FrameLenght;
+import track4j.core.view.View;
 import track4j.sensor.Sensor;
 
 /**
- * Inteface for Recognition and recording.
+ * Inteface for tracking.
  *
  *
  */
-public interface Recognition {
+public interface Tracking {
+
+    /**
+     * Attache the listener.
+     * 
+     * @param listener
+     *            the listener
+     */
+    void setOnJointTracked(JointListener listener);
 
     /**
      * Attache the {@link Sensor}.
@@ -34,6 +44,14 @@ public interface Recognition {
     void attacheSensor(Sensor sensor);
 
     /**
+     * Attache the view.
+     *
+     * @param view
+     *            the {@link View}
+     */
+    void attacheUI(View view);
+
+    /**
      * The sensor is started.
      *
      * @return <code>true</code> if the sensor is started.
@@ -41,11 +59,19 @@ public interface Recognition {
     boolean isStarted();
 
     /**
-     * Get the gesture lenght.
+     * Set the frame length.
      *
-     * @return the gesture lenght in frame
+     * @param length
+     *            the length
      */
-    int getGestureLenght();
+    void setFrameLength(FrameLenght length);
+
+    /**
+     * Get the frame length.
+     *
+     * @return the frame length in frame
+     */
+    int getFrameLength();
 
     /**
      * Start the sensor.
@@ -56,10 +82,5 @@ public interface Recognition {
      * Stop the sensor.
      */
     void stopSensor();
-
-    /**
-     * Start recording.
-     */
-    void startRecording();
 
 }

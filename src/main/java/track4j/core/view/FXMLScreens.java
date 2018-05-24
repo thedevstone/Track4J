@@ -24,7 +24,7 @@ import javafx.fxml.FXML;
  * Enumerator of the .fxml resources for the view.
  *
  */
-public enum FXMLScreens {
+enum FXMLScreens {
 
     /**
      * Menu {@link FXMLScreens} and {@link CSS}.

@@ -19,7 +19,7 @@ package track4j.sensor.kinect;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import track4j.core.recognition.Recognizer;
+import track4j.core.tracking.Tracker;
 import track4j.sensor.IllegalSensorStateException;
 import track4j.sensor.Joint;
 import track4j.sensor.Sensor;
@@ -30,7 +30,7 @@ import track4j.sensor.SensorObserver;
  */
 public class Kinect implements KinectObserver, Sensor {
     private final KinectAdapter kinectAdapter;
-    private SensorObserver recognizer;
+    private SensorObserver tracker;
 
     /**
      * The @link{Kinect.java} constructor.
@@ -62,17 +62,17 @@ public class Kinect implements KinectObserver, Sensor {
 
     @Override
     public void notifyOnSkeletonChange(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
-        this.recognizer.notifyOnSkeletonChange(primaryJoint, secondaryJoint);
+        this.tracker.notifyOnSkeletonChange(primaryJoint, secondaryJoint);
     }
 
     @Override
     public void notifyOnAccelerometerChange(final Vector3D acceleration) {
-        this.recognizer.notifyOnAccelerometerChange(acceleration);
+        this.tracker.notifyOnAccelerometerChange(acceleration);
     }
 
     @Override
     public void startSensor() throws IllegalSensorStateException {
-        if (Recognizer.getInstance().isStarted()) {
+        if (Tracker.getInstance().isStarted()) {
             this.kinectAdapter.start();
         } else {
             throw new IllegalSensorStateException();
@@ -81,7 +81,7 @@ public class Kinect implements KinectObserver, Sensor {
 
     @Override
     public void stopSensor() throws IllegalSensorStateException {
-        if (!Recognizer.getInstance().isStarted()) {
+        if (!Tracker.getInstance().isStarted()) {
             this.kinectAdapter.stop();
         } else {
             throw new IllegalSensorStateException();
@@ -89,8 +89,8 @@ public class Kinect implements KinectObserver, Sensor {
     }
 
     @Override
-    public void attacheRecognizer(final SensorObserver recognizer) {
-        this.recognizer = recognizer;
+    public void attacheTracker(final SensorObserver tracker) {
+        this.tracker = tracker;
     }
 
 }

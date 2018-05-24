@@ -21,7 +21,6 @@ import java.io.IOException;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXProgressBar;
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.application.Platform;
@@ -38,21 +37,17 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import track4j.core.recognition.Recognition;
-import track4j.core.recognition.Recognizer;
-import track4j.core.recording.RecordTimer;
-import track4j.core.recording.TimerObserver;
+import track4j.core.tracking.Tracker;
+import track4j.core.tracking.Tracking;
 
 /**
  *
  *
  */
 @SuppressWarnings("restriction")
-public class RecognizerView implements TimerObserver {
-    private final Recognition recognizer;
-    private boolean recording;
-
-    private Thread record; // NOPMD
+public class TrackerView implements View {
+    private final Tracking tracker;
+    private int frameLenght;
 
     // VIEW
     private Stage stage; // NOPMD
@@ -76,19 +71,13 @@ public class RecognizerView implements TimerObserver {
     private VBox vbox;
     @FXML
     private StackPane canvasStackPane;
-    @FXML
-    private JFXProgressBar progressBar;
-    @FXML
-    private JFXButton startingButton;
-
-    private static final int COUNTDOWN = 5;
 
     /**
-     * @param recognizer
-     *            the {@link Recognizer}
+     * @param tracker
+     *            the {@link Tracker}
      */
-    public RecognizerView(final Recognition recognizer) {
-        this.recognizer = recognizer;
+    public TrackerView(final Tracking tracker) {
+        this.tracker = tracker;
 
         Platform.runLater(() -> {
             final FXMLLoader loader = new FXMLLoader();
@@ -104,19 +93,8 @@ public class RecognizerView implements TimerObserver {
 
     @FXML
     private void initialize() { // NOPMD
-
-        // BUTTONS
-        this.startingButton.setOnAction(e -> {
-            if (!this.recording) {
-                this.record = new RecordTimer(RecognizerView.COUNTDOWN, this);
-                this.record.start();
-                this.xSeries.getData().remove(0, this.xSeries.getData().size() - 1);
-                this.ySeries.getData().remove(0, this.ySeries.getData().size() - 1);
-
-            }
-        });
-        this.startButton.setOnAction(e -> this.recognizer.startSensor());
-        this.stopButton.setOnAction(e -> this.recognizer.stopSensor());
+        this.startButton.setOnAction(e -> this.tracker.startSensor());
+        this.stopButton.setOnAction(e -> this.tracker.stopSensor());
 
         // CANVAS
         this.canvas = new Canvas(this.recorderPane.getMinWidth(), this.recorderPane.getMinHeight());
@@ -142,7 +120,7 @@ public class RecognizerView implements TimerObserver {
         this.stage.setScene(this.scene);
 
         // CLOSING REQUEST
-        this.stage.setOnCloseRequest(e -> this.recognizer.stopSensor());
+        this.stage.setOnCloseRequest(e -> this.tracker.stopSensor());
 
         // SHOWING
         this.stage.show();
@@ -150,54 +128,34 @@ public class RecognizerView implements TimerObserver {
     }
 
     @Override
-    public void udpateTimeCount(final int val) {
-        Platform.runLater(() -> {
-            if (val == 0) {
-                this.startingButton.setText("GO");
-                this.recognizer.startRecording();
-                this.recording = true;
-            } else {
-                this.startingButton.setText(" " + val);
-            }
-        });
-    }
-
-    /**
-     * Update view on frame event.
-     *
-     * @param frame
-     *            the frame
-     * @param derivative
-     *            the {@link Vector2D} derivative
-     * @param path
-     *            the {@link Vector2D} gesture path
-     */
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
-            if (this.recording) {
-                this.xSeries.getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
-                this.ySeries.getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
-                this.progressBar.setProgress((double) frame / this.recognizer.getGestureLenght());
+            if (frame == this.frameLenght - 1) {
+                this.xSeries.getData().clear();
+                this.ySeries.getData().clear();
             }
+            this.xSeries.getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
+            this.ySeries.getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
+
             this.context.fillOval(path.getX() + this.canvas.getWidth() / 2, path.getY() + this.canvas.getHeight() / 2,
                     4, 4);
         });
 
     }
 
-    /**
-     * Update view on feature vector event.
-     */
+    @Override
     public void notifyOnFeatureVectorEvent() {
-        if (this.recording) {
-            this.recording = false;
-        }
         Platform.runLater(() -> this.context.clearRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight()));
     }
 
+    @Override
+    public void setFrameLength(final int length) {
+        this.frameLenght = length;
+    }
+
     /**
-    *
-    */
+     * Start the Fx thread.
+     */
     public static void startFxThread() {
         PlatformImpl.startup(() -> {
         });

@@ -19,8 +19,8 @@ import java.util.Queue;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import track4j.core.recognition.Recognizer;
-import track4j.core.recognition.RecognizerObserver;
+import track4j.core.tracking.Tracker;
+import track4j.core.tracking.TrackingObserver;
 
 /**
  * The @link{Codifier} class.
@@ -45,12 +45,12 @@ public interface Codifier {
     Queue<Vector2D> extractFeatureVector();
 
     /**
-     * Attache the {@link Recognizer} for feeback notification.
+     * Attache the {@link Tracker} for feeback notification.
      *
      * @param recognizer
-     *            the {@link Recognizer}
+     *            the {@link Tracker}
      */
-    void attacheCoreRecognizer(RecognizerObserver recognizer);
+    void attacheCoreRecognizer(TrackingObserver recognizer);
 
     /**
      * Reset the frame for starting a new gesture.

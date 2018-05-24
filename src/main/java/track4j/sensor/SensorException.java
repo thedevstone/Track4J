@@ -26,7 +26,7 @@ public class SensorException extends Exception {
     /**
      * The @link{SensorException.java} constructor.
      */
-    public SensorException() {
+    SensorException() {
         super("A sensor has encountered an error. Please check the configuration or the sensor");
     }
 
@@ -36,7 +36,7 @@ public class SensorException extends Exception {
      * @param message
      *            the exception message.
      */
-    public SensorException(final String message) {
+    SensorException(final String message) {
         super(message);
 
     }

@@ -22,7 +22,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 /**
  * The @link{ObservableKinect} class. Kinect Adapter notify Kinect throw this interface.
  */
-public interface KinectObserver {
+interface KinectObserver {
     /**
      * Notify Kinect on skeleton change.
      *

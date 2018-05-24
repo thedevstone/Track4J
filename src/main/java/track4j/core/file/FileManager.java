@@ -29,7 +29,7 @@ import com.google.common.io.Files;
 /**
  * Class dedicated to File managing.
  */
-final class FileManager {
+public final class FileManager {
 
     private static String libDir;
 
@@ -99,7 +99,7 @@ final class FileManager {
                 Files.copy(new File(FileManager.class.getResource("/native/" + file).getFile()), new File(libToLoad));
 
             } catch (final IOException e) {
-                e.printStackTrace();
+                System.out.println("Errore copia dll");
             }
 
         }

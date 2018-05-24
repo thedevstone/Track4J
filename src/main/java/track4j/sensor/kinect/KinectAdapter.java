@@ -16,16 +16,23 @@
 
 package track4j.sensor.kinect;
 
+import java.util.stream.IntStream;
+
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import edu.ufl.digitalworlds.j4k.J4KSDK;
 import edu.ufl.digitalworlds.j4k.Skeleton;
+import track4j.core.file.FileManager;
 import track4j.sensor.Joint;
 
 /**
  * The @link{KinectAdapter} class. It adaps kinect J4KSDK to this framework.
  */
 class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
+    static {
+        FileManager.loadNativeLibraries();
+    }
     private KinectObserver kinect;
     private boolean first;
     private final Joint primaryJoint;
@@ -71,7 +78,7 @@ class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
                 skeleton = Skeleton.getSkeleton(i, skeletonTracked, jointPosition, jointOrientation, jointStatus, this);
                 Vector2D joint1;
                 Vector2D joint2;
-                // final Vector3D acceleration;
+                final Vector3D acceleration;
 
                 // JOINT WITHOUT FOOT
                 switch (this.primaryJoint) {
@@ -97,15 +104,15 @@ class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
                     break;
                 }
                 // ACCLEROMETER
-                // final double[] doubleAcceleration = new double[3];
-                // final float[] floatAccleration = this.getAccelerometerReading();
-                // IntStream.range(0, floatAccleration.length)
-                // .forEach(index -> doubleAcceleration[index] = floatAccleration[index]);
-                // acceleration = new Vector3D(doubleAcceleration);
+                final double[] doubleAcceleration = new double[3];
+                final float[] floatAccleration = this.getAccelerometerReading();
+                IntStream.range(0, floatAccleration.length)
+                        .forEach(index -> doubleAcceleration[index] = floatAccleration[index]);
+                acceleration = new Vector3D(doubleAcceleration);
 
                 // NOTIFY
                 this.kinect.notifyOnSkeletonChange(joint1, joint2);
-                // this.kinect.notifyOnAccelerometerChange(acceleration);
+                this.kinect.notifyOnAccelerometerChange(acceleration);
             }
         }
         this.first = true;

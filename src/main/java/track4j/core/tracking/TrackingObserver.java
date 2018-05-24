@@ -14,7 +14,7 @@
  * limitations under the License.
  *******************************************************************************/
 
-package track4j.core.recognition;
+package track4j.core.tracking;
 
 import java.util.Queue;
 
@@ -23,9 +23,9 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 /**
  * The @link{ObservableCoreRecognizer} class.
  */
-public interface RecognizerObserver {
+public interface TrackingObserver {
     /**
-     * Notify the {@link Recognizer} when a feature vector {@link Queue} is avaiable.
+     * Notify the {@link Tracker} when a feature vector {@link Queue} is avaiable.
      *
      * @param featureVector
      *            the {@link Queue} feature vector.
@@ -33,15 +33,15 @@ public interface RecognizerObserver {
     void notifyOnFeatureVectorEvent(Queue<Vector2D> featureVector);
 
     /**
-     * Notify the {@link Recognizer} when a frame changes.
+     * Notify the {@link Tracker} when a frame changes.
      *
      * @param frame
      *            the frame
-     * @param vector
+     * @param derivative
      *            the derivative vector
-     * @param startingVector
-     *            the starting vector
+     * @param distanceVector
+     *            the distance vector from starting frame
      */
-    void notifyOnFrameChange(int frame, Vector2D vector, Vector2D startingVector);
+    void notifyOnFrameChange(int frame, Vector2D derivative, Vector2D distanceVector);
 
 }

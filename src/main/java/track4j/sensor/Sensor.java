@@ -50,5 +50,5 @@ public interface Sensor {
      * @param recognizer
      *            the {@link SensorObserver}
      */
-    void attacheRecognizer(SensorObserver recognizer);
+    void attacheTracker(SensorObserver recognizer);
 }

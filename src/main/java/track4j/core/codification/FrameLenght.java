@@ -14,17 +14,33 @@
  * limitations under the License.
  *******************************************************************************/
 
-package track4j.core.recording;
+package track4j.core.codification;
 
 /**
- * The @link{Recorder} class.
+ * The @link{JestureFrameLenght} class.
  */
-public interface TimerObserver {
+public enum FrameLenght {
     /**
-     * Update the timer for gesture recording.
-     *
-     * @param val
-     *            actual time
+     * Gestures duration in frame. 30 FPS base
      */
-    void udpateTimeCount(int val);
+    ONE_SECOND(30), TWO_SECONDS(60), THREE_SECONDS(90);
+
+    private int frameNumber;
+
+    /**
+     * The @link{JestureFrameLenght.java} constructor.
+     */
+    FrameLenght(final int frames) {
+        this.frameNumber = frames;
+    }
+
+    /**
+     * Get the @link{frameNumber}.
+     *
+     * @return the @link{frameNumber}
+     */
+    public int getFrameNumber() {
+        return this.frameNumber;
+    }
+
 }

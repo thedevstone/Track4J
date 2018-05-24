@@ -21,7 +21,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.google.common.collect.EvictingQueue;
 
-import track4j.core.recognition.RecognizerObserver;
+import track4j.core.tracking.TrackingObserver;
 
 /**
  * The @link{DerivativeCodifier} class.
@@ -32,8 +32,8 @@ public class DerivativeCodifier implements Codifier {
     private Vector2D derivative; // NOPMD
     private Vector2D startingVector;
     private int frame;
-    private final GestureFrameLenght gestureLenght;
-    private RecognizerObserver recognizer;
+    private final FrameLenght gestureLenght;
+    private TrackingObserver recognizer;
 
     /**
      * The @link{DerivativeCodifier.java} constructor.
@@ -41,7 +41,7 @@ public class DerivativeCodifier implements Codifier {
      * @param frames
      *            the gesture's duration in frame
      */
-    public DerivativeCodifier(final GestureFrameLenght frames) {
+    public DerivativeCodifier(final FrameLenght frames) {
         this.featureVector = EvictingQueue.create(frames.getFrameNumber());
         this.oldVector = new Vector2D(0, 0);
         this.frame = 0;
@@ -61,7 +61,7 @@ public class DerivativeCodifier implements Codifier {
         if (this.frame == this.gestureLenght.getFrameNumber() - 1) {
             this.resetFrame();
             this.recognizer.notifyOnFeatureVectorEvent(this.featureVector);
-        } else { // NELLA CODA C'E' UN VETTORE IN PIU'
+        } else {
             this.incrementFrame();
             this.recognizer.notifyOnFrameChange(this.frame, this.derivative, this.startingVector.subtract(newVector));
         }
@@ -73,7 +73,7 @@ public class DerivativeCodifier implements Codifier {
     }
 
     @Override
-    public void attacheCoreRecognizer(final RecognizerObserver recognizer) {
+    public void attacheCoreRecognizer(final TrackingObserver recognizer) {
         this.recognizer = recognizer;
     }
 
@@ -89,9 +89,9 @@ public class DerivativeCodifier implements Codifier {
     /**
      * Get the gesture lenght.
      *
-     * @return the {@link GestureFrameLenght}
+     * @return the {@link FrameLenght}
      */
-    public GestureFrameLenght getGestureLenght() {
+    public FrameLenght getGestureLenght() {
         return this.gestureLenght;
     }
 
