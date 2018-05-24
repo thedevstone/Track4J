@@ -1,5 +1,6 @@
 package test;
 
+import track4j.core.file.FileManager;
 import track4j.core.recognition.Recognition;
 import track4j.core.recognition.Recognizer;
 import track4j.sensor.Joint;
@@ -30,6 +31,7 @@ public final class Test {
      *             the sensor exception
      */
     public static void main(final String[] args) throws SensorException {
+        FileManager.loadNativeLibraries();
         final Sensor sensor = new Kinect(Joint.LEFT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
         final Recognition recognizer = Recognizer.getInstance();
         recognizer.attacheSensor(sensor);
