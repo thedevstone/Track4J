@@ -151,7 +151,7 @@ public class TrackerView implements View {
     private void initGraphic() {
         this.tabPane.getTabs().get(0).setGraphic(ViewUtilities.iconSetter(Material.BLUR_ON, IconDim.MEDIUM));
         this.tabPane.getTabs().get(1).setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
-        this.startButton.setGraphic(ViewUtilities.iconSetter(Material.POWER, IconDim.MEDIUM));
+        this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
 
     }
 
