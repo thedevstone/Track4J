@@ -2,6 +2,12 @@ package track4j.core.view;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import track4j.core.codification.FrameLenght;
+
+/**
+ *
+ *
+ */
 public interface View {
 
     /**
@@ -25,8 +31,8 @@ public interface View {
      * Set the frame Length.
      *
      * @param length
-     *            the length
+     *            the {@link FrameLenght}
      */
-    void setFrameLength(int length);
+    void setFrameLength(FrameLenght length);
 
 }

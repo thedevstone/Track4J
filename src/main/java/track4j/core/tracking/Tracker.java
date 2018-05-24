@@ -43,7 +43,7 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
     private Sensor sensor;
     private final Set<View> view;
     private final Set<JointListener> jointListener;
-    private FrameLenght gestureLenght;
+    private FrameLenght frameLength;
     private boolean started;
 
     private Tracker() {
@@ -56,7 +56,7 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
             this.codifier = new DerivativeCodifier(gestureLenght);
         }
 
-        this.gestureLenght = gestureLenght;
+        this.frameLength = gestureLenght;
         this.started = false;
         this.codifier.attacheCoreRecognizer(this);
 
@@ -89,7 +89,7 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
     @Override
     public void attacheUI(final View view) {
         this.view.add(view);
-        this.view.forEach(t -> t.setFrameLength(this.getFrameLength()));
+        this.view.forEach(t -> t.setFrameLength(this.frameLength));
     }
 
     @Override
@@ -142,7 +142,7 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
 
     @Override
     public int getFrameLength() {
-        return this.gestureLenght.getFrameNumber();
+        return this.frameLength.getFrameNumber();
     }
 
     @Override
@@ -152,8 +152,9 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
 
     @Override
     public void setFrameLength(final FrameLenght length) {
-        this.gestureLenght = length;
-
+        this.frameLength = length;
+        this.codifier.setFrameLength(length);
+        this.view.forEach(t -> t.setFrameLength(length));
     }
 
     @Override

@@ -56,4 +56,12 @@ public interface Codifier {
      * Reset the frame for starting a new gesture.
      */
     void resetFrame();
+
+    /**
+     * Set the frame length.
+     * 
+     * @param length
+     *            the {@link FrameLenght}.
+     */
+    void setFrameLength(FrameLenght length);
 }

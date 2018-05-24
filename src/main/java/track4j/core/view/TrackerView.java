@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.effects.JFXDepthManager;
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.application.Platform;
@@ -31,12 +32,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import track4j.core.codification.FrameLenght;
 import track4j.core.tracking.Tracker;
 import track4j.core.tracking.Tracking;
 
@@ -47,7 +50,7 @@ import track4j.core.tracking.Tracking;
 @SuppressWarnings("restriction")
 public class TrackerView implements View {
     private final Tracking tracker;
-    private int frameLenght;
+    private FrameLenght frameLenght;
 
     // VIEW
     private Stage stage; // NOPMD
@@ -71,6 +74,8 @@ public class TrackerView implements View {
     private VBox vbox;
     @FXML
     private StackPane canvasStackPane;
+    @FXML
+    private ComboBox<FrameLenght> frameLengthCombo;
 
     /**
      * @param tracker
@@ -95,9 +100,13 @@ public class TrackerView implements View {
     private void initialize() { // NOPMD
         this.startButton.setOnAction(e -> this.tracker.startSensor());
         this.stopButton.setOnAction(e -> this.tracker.stopSensor());
+        this.initCombos();
+        this.frameLengthCombo.setOnAction(t -> this.tracker.setFrameLength(this.frameLengthCombo.getValue()));
 
         // CANVAS
         this.canvas = new Canvas(this.recorderPane.getMinWidth(), this.recorderPane.getMinHeight());
+        this.canvas.widthProperty().bind(this.recorderPane.widthProperty());
+        this.canvas.heightProperty().bind(this.recorderPane.heightProperty());
         this.context = this.canvas.getGraphicsContext2D();
         this.canvasStackPane.getChildren().setAll(this.canvas);
 
@@ -127,17 +136,25 @@ public class TrackerView implements View {
 
     }
 
+    private void initCombos() {
+        this.frameLengthCombo.getItems().add(FrameLenght.ONE_SECOND);
+        this.frameLengthCombo.getItems().add(FrameLenght.TWO_SECONDS);
+        this.frameLengthCombo.getItems().add(FrameLenght.THREE_SECONDS);
+
+        JFXDepthManager.setDepth(this.frameLengthCombo, 4);
+    }
+
     @Override
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
-            if (frame == this.frameLenght - 1) {
+            if (frame == this.frameLenght.getFrameNumber() - 1) {
                 this.xSeries.getData().clear();
                 this.ySeries.getData().clear();
             }
             this.xSeries.getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
             this.ySeries.getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
 
-            this.context.fillOval(path.getX() + this.canvas.getWidth() / 2, path.getY() + this.canvas.getHeight() / 2,
+            this.context.fillOval(-path.getX() + this.canvas.getWidth() / 2, path.getY() + this.canvas.getHeight() / 2,
                     4, 4);
         });
 
@@ -149,7 +166,7 @@ public class TrackerView implements View {
     }
 
     @Override
-    public void setFrameLength(final int length) {
+    public void setFrameLength(final FrameLenght length) {
         this.frameLenght = length;
     }
 

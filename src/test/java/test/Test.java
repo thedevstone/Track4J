@@ -42,7 +42,6 @@ public final class Test {
         recognizer.attacheSensor(sensor);
         final View view = new TrackerView(recognizer);
         recognizer.attacheUI(view);
-        recognizer.startSensor();
         recognizer.setOnJointTracked(new JointListener() {
 
             @Override
