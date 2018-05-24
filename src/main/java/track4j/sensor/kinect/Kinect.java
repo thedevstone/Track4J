@@ -31,6 +31,7 @@ import track4j.sensor.SensorObserver;
 public class Kinect implements KinectObserver, Sensor {
     private final KinectAdapter kinectAdapter;
     private SensorObserver tracker;
+    private boolean state; // NOPMD
 
     /**
      * The @link{Kinect.java} constructor.
@@ -74,6 +75,7 @@ public class Kinect implements KinectObserver, Sensor {
     public void startSensor() throws IllegalSensorStateException {
         if (Tracker.getInstance().isStarted()) {
             this.kinectAdapter.start();
+            this.state = true;
         } else {
             throw new IllegalSensorStateException();
         }
@@ -83,6 +85,7 @@ public class Kinect implements KinectObserver, Sensor {
     public void stopSensor() throws IllegalSensorStateException {
         if (!Tracker.getInstance().isStarted()) {
             this.kinectAdapter.stop();
+            this.state = false;
         } else {
             throw new IllegalSensorStateException();
         }
@@ -91,6 +94,11 @@ public class Kinect implements KinectObserver, Sensor {
     @Override
     public void attacheTracker(final SensorObserver tracker) {
         this.tracker = tracker;
+    }
+
+    @Override
+    public boolean state() {
+        return this.state;
     }
 
 }

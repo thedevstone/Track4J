@@ -29,7 +29,7 @@ public interface Tracking {
 
     /**
      * Attache the listener.
-     * 
+     *
      * @param listener
      *            the listener
      */
@@ -82,5 +82,12 @@ public interface Tracking {
      * Stop the sensor.
      */
     void stopSensor();
+
+    /**
+     * Sensor state.
+     * 
+     * @return <code>true</code> if it's on
+     */
+    boolean state();
 
 }

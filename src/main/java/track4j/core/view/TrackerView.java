@@ -19,8 +19,10 @@ package track4j.core.view;
 import java.io.IOException;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.kordamp.ikonli.material.Material;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.effects.JFXDepthManager;
 import com.sun.javafx.application.PlatformImpl;
 
@@ -65,11 +67,11 @@ public class TrackerView implements View {
     private GraphicsContext context;
 
     @FXML
+    private JFXTabPane tabPane;
+    @FXML
     private BorderPane recorderPane; // NOPMD
     @FXML
     private JFXButton startButton;
-    @FXML
-    private JFXButton stopButton;
     @FXML
     private VBox vbox;
     @FXML
@@ -98,19 +100,41 @@ public class TrackerView implements View {
 
     @FXML
     private void initialize() { // NOPMD
-        this.startButton.setOnAction(e -> this.tracker.startSensor());
-        this.stopButton.setOnAction(e -> this.tracker.stopSensor());
+        this.initButtons();
         this.initCombos();
-        this.frameLengthCombo.setOnAction(t -> this.tracker.setFrameLength(this.frameLengthCombo.getValue()));
+        this.initGraphic();
+        this.initCanvas();
+        this.initChart();
+        this.stage = new Stage();
+        this.scene = new Scene(this.recorderPane);
+        this.stage.setScene(this.scene);
+        this.stage.setOnCloseRequest(e -> this.tracker.stopSensor());
+        this.chargeSceneSheets(FXMLScreens.HOME);
+        this.stage.show();
 
-        // CANVAS
+    }
+
+    private void initButtons() {
+        this.startButton.setOnAction(e -> {
+            if (this.tracker.state()) {
+                this.tracker.stopSensor();
+                this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
+            } else {
+                this.tracker.startSensor();
+                this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY_OFF, IconDim.MEDIUM));
+            }
+        });
+    }
+
+    private void initCanvas() {
         this.canvas = new Canvas(this.recorderPane.getMinWidth(), this.recorderPane.getMinHeight());
         this.canvas.widthProperty().bind(this.recorderPane.widthProperty());
         this.canvas.heightProperty().bind(this.recorderPane.heightProperty());
         this.context = this.canvas.getGraphicsContext2D();
         this.canvasStackPane.getChildren().setAll(this.canvas);
+    }
 
-        // CHART
+    private void initChart() {
         this.xSeries = new XYChart.Series<>();
         this.ySeries = new XYChart.Series<>();
         this.lineChartX = RecordingFactory.createDerivativeLineChart();
@@ -122,25 +146,25 @@ public class TrackerView implements View {
         HBox.setHgrow(this.lineChartX, Priority.ALWAYS);
         HBox.setHgrow(this.lineChartY, Priority.ALWAYS);
         this.vbox.getChildren().addAll(this.lineChartX, this.lineChartY);
+    }
 
-        // CREATING VIEW
-        this.stage = new Stage();
-        this.scene = new Scene(this.recorderPane);
-        this.stage.setScene(this.scene);
-
-        // CLOSING REQUEST
-        this.stage.setOnCloseRequest(e -> this.tracker.stopSensor());
-
-        // SHOWING
-        this.stage.show();
+    private void initGraphic() {
+        this.tabPane.getTabs().get(0).setGraphic(ViewUtilities.iconSetter(Material.BLUR_ON, IconDim.MEDIUM));
+        this.tabPane.getTabs().get(1).setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
+        this.startButton.setGraphic(ViewUtilities.iconSetter(Material.POWER, IconDim.MEDIUM));
 
     }
 
+    private void chargeSceneSheets(final FXMLScreens screen) {
+        this.scene.getStylesheets().add(TrackerView.class.getResource(screen.getCssPath()).toString());
+    }
+
     private void initCombos() {
+        this.frameLengthCombo.setOnAction(t -> this.tracker.setFrameLength(this.frameLengthCombo.getValue()));
         this.frameLengthCombo.getItems().add(FrameLenght.ONE_SECOND);
         this.frameLengthCombo.getItems().add(FrameLenght.TWO_SECONDS);
         this.frameLengthCombo.getItems().add(FrameLenght.THREE_SECONDS);
-
+        this.frameLengthCombo.getSelectionModel().select(this.frameLenght);
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
     }
 

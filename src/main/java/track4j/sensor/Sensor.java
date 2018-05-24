@@ -51,4 +51,11 @@ public interface Sensor {
      *            the {@link SensorObserver}
      */
     void attacheTracker(SensorObserver recognizer);
+
+    /**
+     * Sensor state.
+     *
+     * @return <code>true</code> if it's on
+     */
+    boolean state();
 }

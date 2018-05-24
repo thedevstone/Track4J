@@ -162,4 +162,9 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
         this.jointListener.add(listener);
     }
 
+    @Override
+    public boolean state() {
+        return this.sensor.state();
+    }
+
 }
