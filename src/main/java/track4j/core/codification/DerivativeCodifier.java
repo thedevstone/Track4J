@@ -1,6 +1,18 @@
-/**
+/*******************************************************************************
+ * Copyright (c) 2018 Giulianini Luca
  *
- */
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 package track4j.core.codification;
 
 import java.util.Queue;
@@ -9,7 +21,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.google.common.collect.EvictingQueue;
 
-import track4j.core.recognition.RecognizerObserver;
+import track4j.core.tracking.TrackingObserver;
 
 /**
  * The @link{DerivativeCodifier} class.
@@ -20,8 +32,8 @@ public class DerivativeCodifier implements Codifier {
     private Vector2D derivative; // NOPMD
     private Vector2D startingVector;
     private int frame;
-    private final GestureFrameLenght gestureLenght;
-    private RecognizerObserver recognizer;
+    private FrameLenght frameLength;
+    private TrackingObserver recognizer;
 
     /**
      * The @link{DerivativeCodifier.java} constructor.
@@ -29,11 +41,11 @@ public class DerivativeCodifier implements Codifier {
      * @param frames
      *            the gesture's duration in frame
      */
-    public DerivativeCodifier(final GestureFrameLenght frames) {
-        this.featureVector = EvictingQueue.create(frames.getFrameNumber());
+    public DerivativeCodifier(final FrameLenght frames) {
+        this.featureVector = EvictingQueue.create(FrameLenght.THREE_SECONDS.getFrameNumber());
         this.oldVector = new Vector2D(0, 0);
         this.frame = 0;
-        this.gestureLenght = frames;
+        this.frameLength = frames;
     }
 
     @Override
@@ -46,10 +58,10 @@ public class DerivativeCodifier implements Codifier {
         if (this.frame == 0) {
             this.startingVector = newVector;
         }
-        if (this.frame == this.gestureLenght.getFrameNumber() - 1) {
+        if (this.frame == this.frameLength.getFrameNumber() - 1) {
             this.resetFrame();
             this.recognizer.notifyOnFeatureVectorEvent(this.featureVector);
-        } else { // NELLA CODA C'E' UN VETTORE IN PIU'
+        } else {
             this.incrementFrame();
             this.recognizer.notifyOnFrameChange(this.frame, this.derivative, this.startingVector.subtract(newVector));
         }
@@ -61,7 +73,7 @@ public class DerivativeCodifier implements Codifier {
     }
 
     @Override
-    public void attacheCoreRecognizer(final RecognizerObserver recognizer) {
+    public void attacheCoreRecognizer(final TrackingObserver recognizer) {
         this.recognizer = recognizer;
     }
 
@@ -77,10 +89,15 @@ public class DerivativeCodifier implements Codifier {
     /**
      * Get the gesture lenght.
      *
-     * @return the {@link GestureFrameLenght}
+     * @return the {@link FrameLenght}
      */
-    public GestureFrameLenght getGestureLenght() {
-        return this.gestureLenght;
+    public FrameLenght getGestureLenght() {
+        return this.frameLength;
+    }
+
+    @Override
+    public void setFrameLength(final FrameLenght length) {
+        this.frameLength = length;
     }
 
 }

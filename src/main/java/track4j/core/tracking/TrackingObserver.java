@@ -14,30 +14,34 @@
  * limitations under the License.
  *******************************************************************************/
 
-package track4j.sensor;
+package track4j.core.tracking;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import java.util.Queue;
+
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 /**
- * The @link{ObservableRecognizer} class.
+ * The @link{ObservableCoreRecognizer} class.
  */
-public interface SensorObserver {
+public interface TrackingObserver {
     /**
-     * Notify recognizer when a Joint {@link Vector2D} is available.
+     * Notify the {@link Tracker} when a feature vector {@link Queue} is avaiable.
      *
-     * @param primaryJoint
-     *            the primary Joint {@link Vector2D} that generates gestures.
-     * @param secondaryJoint
-     *            the secondary Joint {@link Vector2D}
+     * @param featureVector
+     *            the {@link Queue} feature vector.
      */
-    void notifyOnSkeletonChange(Vector2D primaryJoint, Vector2D secondaryJoint);
+    void notifyOnFeatureVectorEvent(Queue<Vector2D> featureVector);
 
     /**
-     * Notify recognizer when a acceleration {@link Vector3D} is available.
+     * Notify the {@link Tracker} when a frame changes.
      *
-     * @param acceleration
-     *            the {@link Vector3D} acceleration
+     * @param frame
+     *            the frame
+     * @param derivative
+     *            the derivative vector
+     * @param distanceVector
+     *            the distance vector from starting frame
      */
-    void notifyOnAccelerometerChange(Vector3D acceleration);
+    void notifyOnFrameChange(int frame, Vector2D derivative, Vector2D distanceVector);
+
 }

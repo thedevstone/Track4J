@@ -13,37 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-
-package track4j.core.codification;
+package track4j.core.file;
 
 /**
- * Frequency in extraction.
- *
+ * Native file paths.
  *
  */
-public enum FeatureExtractionFrequency {
+enum LibPaths {
     /**
-     * Gestures duration in frame. 30 FPS base
+     * Kinect1_64.
      */
-    TEN_SECOND(10), TWENTY_SECONDS(20), THIRTY_SECONDS(30);
-
-    private int frequencyNumber;
-
+    LIB_NAME(".Track4J"),
     /**
-     * The @link{JestureFrameLenght.java} constructor.
-     *
-     * @param frequency
+     * Native.
      */
-    FeatureExtractionFrequency(final int frequency) {
-        this.frequencyNumber = frequency;
+    NATIVE_DIR("native");
+
+    private String pathNative;
+
+    LibPaths(final String nativeLib) {
+        this.pathNative = nativeLib;
     }
 
     /**
-     * Get the @link{frameNumber}.
+     * Get the path for native.
      *
-     * @return the @link{frameNumber}
+     * @return the String path
      */
-    public int getExtractionFrequency() {
-        return this.frequencyNumber;
+    public String getDirName() {
+        return this.pathNative;
     }
+
 }

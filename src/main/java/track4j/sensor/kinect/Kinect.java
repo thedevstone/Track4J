@@ -1,12 +1,25 @@
-/**
+/*******************************************************************************
+ * Copyright (c) 2018 Giulianini Luca
  *
- */
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
+
 package track4j.sensor.kinect;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import track4j.core.recognition.Recognizer;
+import track4j.core.tracking.Tracker;
 import track4j.sensor.IllegalSensorStateException;
 import track4j.sensor.Joint;
 import track4j.sensor.Sensor;
@@ -17,7 +30,8 @@ import track4j.sensor.SensorObserver;
  */
 public class Kinect implements KinectObserver, Sensor {
     private final KinectAdapter kinectAdapter;
-    private SensorObserver recognizer;
+    private SensorObserver tracker;
+    private boolean state; // NOPMD
 
     /**
      * The @link{Kinect.java} constructor.
@@ -49,18 +63,19 @@ public class Kinect implements KinectObserver, Sensor {
 
     @Override
     public void notifyOnSkeletonChange(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
-        this.recognizer.notifyOnSkeletonChange(primaryJoint, secondaryJoint);
+        this.tracker.notifyOnSkeletonChange(primaryJoint, secondaryJoint);
     }
 
     @Override
     public void notifyOnAccelerometerChange(final Vector3D acceleration) {
-        this.recognizer.notifyOnAccelerometerChange(acceleration);
+        this.tracker.notifyOnAccelerometerChange(acceleration);
     }
 
     @Override
     public void startSensor() throws IllegalSensorStateException {
-        if (Recognizer.getInstance().isStarted()) {
+        if (Tracker.getInstance().isStarted()) {
             this.kinectAdapter.start();
+            this.state = true;
         } else {
             throw new IllegalSensorStateException();
         }
@@ -68,16 +83,22 @@ public class Kinect implements KinectObserver, Sensor {
 
     @Override
     public void stopSensor() throws IllegalSensorStateException {
-        if (!Recognizer.getInstance().isStarted()) {
+        if (!Tracker.getInstance().isStarted()) {
             this.kinectAdapter.stop();
+            this.state = false;
         } else {
             throw new IllegalSensorStateException();
         }
     }
 
     @Override
-    public void attacheRecognizer(final SensorObserver recognizer) {
-        this.recognizer = recognizer;
+    public void attacheTracker(final SensorObserver tracker) {
+        this.tracker = tracker;
+    }
+
+    @Override
+    public boolean state() {
+        return this.state;
     }
 
 }

@@ -1,18 +1,38 @@
-/**
+/*******************************************************************************
+ * Copyright (c) 2018 Giulianini Luca
  *
- */
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
+
 package track4j.sensor.kinect;
 
+import java.util.stream.IntStream;
+
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import edu.ufl.digitalworlds.j4k.J4KSDK;
 import edu.ufl.digitalworlds.j4k.Skeleton;
+import track4j.core.file.FileManager;
 import track4j.sensor.Joint;
 
 /**
  * The @link{KinectAdapter} class. It adaps kinect J4KSDK to this framework.
  */
 class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
+    static {
+        FileManager.loadNativeLibraries();
+    }
     private KinectObserver kinect;
     private boolean first;
     private final Joint primaryJoint;
@@ -58,7 +78,7 @@ class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
                 skeleton = Skeleton.getSkeleton(i, skeletonTracked, jointPosition, jointOrientation, jointStatus, this);
                 Vector2D joint1;
                 Vector2D joint2;
-                // final Vector3D acceleration;
+                final Vector3D acceleration;
 
                 // JOINT WITHOUT FOOT
                 switch (this.primaryJoint) {
@@ -84,15 +104,15 @@ class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
                     break;
                 }
                 // ACCLEROMETER
-                // final double[] doubleAcceleration = new double[3];
-                // final float[] floatAccleration = this.getAccelerometerReading();
-                // IntStream.range(0, floatAccleration.length)
-                // .forEach(index -> doubleAcceleration[index] = floatAccleration[index]);
-                // acceleration = new Vector3D(doubleAcceleration);
+                final double[] doubleAcceleration = new double[3];
+                final float[] floatAccleration = this.getAccelerometerReading();
+                IntStream.range(0, floatAccleration.length)
+                        .forEach(index -> doubleAcceleration[index] = floatAccleration[index]);
+                acceleration = new Vector3D(doubleAcceleration);
 
                 // NOTIFY
                 this.kinect.notifyOnSkeletonChange(joint1, joint2);
-                // this.kinect.notifyOnAccelerometerChange(acceleration);
+                this.kinect.notifyOnAccelerometerChange(acceleration);
             }
         }
         this.first = true;

@@ -13,14 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
+
 package track4j.core.codification;
 
 /**
- * The @link{Codification} class.
+ * The @link{JestureFrameLenght} class.
  */
-public enum Codification {
+public enum FrameLenght {
     /**
-     * Type of codification.
+     * Gestures duration in frame. 30 FPS base
      */
-    DERIVATIVE, VECTORIAL_SPACE
+    ONE_SECOND(30), TWO_SECONDS(60), THREE_SECONDS(90);
+
+    private int frameNumber;
+
+    /**
+     * The @link{JestureFrameLenght.java} constructor.
+     */
+    FrameLenght(final int frames) {
+        this.frameNumber = frames;
+    }
+
+    /**
+     * Get the @link{frameNumber}.
+     *
+     * @return the @link{frameNumber}
+     */
+    public int getFrameNumber() {
+        return this.frameNumber;
+    }
+
 }
