@@ -91,7 +91,6 @@ publishing {
             version project_version
             artifact sourcesJar
             artifact javadocJar
-            artifact fatJar
         }
     }
 }
