@@ -140,8 +140,7 @@ public final class ViewUtilities {
      * @param message
      *            the String text of the {@link Notification}
      * @param secondsDuration
-     *            the number of {@link com.jlearn.view.utilities.enums.NotificationType.Duration} of the
-     *            {@link Notification}
+     *            the number of {@link Duration} of the {@link Notification}
      * @param notiType
      *            the {@link NotificationType} of the {@link Notification}
      * @param ev
