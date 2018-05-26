@@ -58,7 +58,7 @@ public class DerivativeCodifier implements Codifier {
         if (this.frame == 0) {
             this.startingVector = newVector;
         }
-        if (this.frame == this.frameLength.getFrameNumber() - 1) {
+        if (this.frame > this.frameLength.getFrameNumber() - 1) {
             this.resetFrame();
             this.recognizer.notifyOnFeatureVectorEvent(this.featureVector);
         } else {

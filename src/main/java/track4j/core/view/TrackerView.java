@@ -171,7 +171,7 @@ public class TrackerView implements View {
     @Override
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
-            if (frame == this.frameLenght.getFrameNumber() - 1) {
+            if (frame > this.frameLenght.getFrameNumber() - 1) {
                 this.xSeries.getData().clear();
                 this.ySeries.getData().clear();
             }
