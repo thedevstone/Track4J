@@ -40,7 +40,7 @@ repositories {
 Reference the repository from this location using:
 ```
 dependencies {
-    compile 'it.unibo.track4j:track4j:1.0.0'
+    compile 'com.github.giulianini:track4j:1.0.0'
 }
 ```
 
@@ -48,10 +48,18 @@ dependencies {
 #### How to Include In Maven Project
 ```xml
 <dependency>
-  <groupId>it.unibo.track4j</groupId>
+  <groupId>com.github.giulianini</groupId>
   <artifactId>track4j</artifactId>
   <version>1.0.0</version>
   <type>pom</type>
+</dependency>
+```
+
+### Ivy
+#### How to Include In Ivy Project
+```xml
+<dependency org='com.github.giulianini' name='track4j' rev='1.0.0'>
+  <artifact name='track4j' ext='pom' />
 </dependency>
 ```
 
