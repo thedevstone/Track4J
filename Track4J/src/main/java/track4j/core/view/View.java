@@ -3,6 +3,7 @@ package track4j.core.view;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import track4j.core.codification.FrameLenght;
+import track4j.core.tracking.Tracking;
 
 /**
  *
@@ -34,5 +35,31 @@ public interface View {
      *            the {@link FrameLenght}
      */
     void setFrameLength(FrameLenght length);
+
+    /**
+     * Start the {@link Tracking}.
+     */
+    void startSensor();
+
+    /**
+     * Stop the {@link Tracking}.
+     */
+    void stopSensor();
+
+    /**
+     * Get the tracker.
+     *
+     * @return the {@link Tracking} tracker
+     *
+     * @return
+     */
+    Tracking getTracker();
+
+    /**
+     * Get the {@link FrameLenght} for tracking.
+     *
+     * @return the {@link FrameLenght}
+     */
+    FrameLenght getFrameLength();
 
 }

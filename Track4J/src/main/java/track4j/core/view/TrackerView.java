@@ -50,9 +50,7 @@ import track4j.core.tracking.Tracking;
  *
  */
 @SuppressWarnings("restriction")
-public class TrackerView implements View {
-    private final Tracking tracker;
-    private FrameLenght frameLenght;
+public class TrackerView extends AbstractView {
 
     // VIEW
     private Stage stage; // NOPMD
@@ -84,7 +82,7 @@ public class TrackerView implements View {
      *            the {@link Tracker}
      */
     public TrackerView(final Tracking tracker) {
-        this.tracker = tracker;
+        super(tracker);
 
         Platform.runLater(() -> {
             final FXMLLoader loader = new FXMLLoader();
@@ -108,7 +106,7 @@ public class TrackerView implements View {
         this.stage = new Stage();
         this.scene = new Scene(this.recorderPane);
         this.stage.setScene(this.scene);
-        this.stage.setOnCloseRequest(e -> this.tracker.stopSensor());
+        this.stage.setOnCloseRequest(e -> this.stopSensor());
         this.chargeSceneSheets(FXMLScreens.HOME);
         this.stage.show();
 
@@ -116,11 +114,11 @@ public class TrackerView implements View {
 
     private void initButtons() {
         this.startButton.setOnAction(e -> {
-            if (this.tracker.state()) {
-                this.tracker.stopSensor();
+            if (this.getTracker().state()) {
+                this.stopSensor();
                 this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
             } else {
-                this.tracker.startSensor();
+                this.startSensor();
                 this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY_OFF, IconDim.MEDIUM));
             }
         });
@@ -160,26 +158,26 @@ public class TrackerView implements View {
     }
 
     private void initCombos() {
-        this.frameLengthCombo.setOnAction(t -> this.tracker.setFrameLength(this.frameLengthCombo.getValue()));
+        this.frameLengthCombo.setOnAction(t -> this.setFrameLength(this.frameLengthCombo.getValue()));
         this.frameLengthCombo.getItems().add(FrameLenght.ONE_SECOND);
         this.frameLengthCombo.getItems().add(FrameLenght.TWO_SECONDS);
         this.frameLengthCombo.getItems().add(FrameLenght.THREE_SECONDS);
-        this.frameLengthCombo.getSelectionModel().select(this.frameLenght);
+        this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
     }
 
     @Override
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
-            if (frame > this.frameLenght.getFrameNumber() - 1) {
+            if (frame > (this.getFrameLength().getFrameNumber() - 1)) {
                 this.xSeries.getData().clear();
                 this.ySeries.getData().clear();
             }
             this.xSeries.getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
             this.ySeries.getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
 
-            this.context.fillOval(-path.getX() + this.canvas.getWidth() / 2, path.getY() + this.canvas.getHeight() / 2,
-                    4, 4);
+            this.context.fillOval(-path.getX() + (this.canvas.getWidth() / 2),
+                    path.getY() + (this.canvas.getHeight() / 2), 4, 4);
         });
 
     }
@@ -187,11 +185,6 @@ public class TrackerView implements View {
     @Override
     public void notifyOnFeatureVectorEvent() {
         Platform.runLater(() -> this.context.clearRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight()));
-    }
-
-    @Override
-    public void setFrameLength(final FrameLenght length) {
-        this.frameLenght = length;
     }
 
     /**
