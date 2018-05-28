@@ -1,0 +1,158 @@
+buildscript {
+	ext.your_name = 'Luca Giulianini'
+    ext.your_email = 'luca.giulianini2@studio.unibo.it'
+    ext.your_github_name = 'Giulianini'
+    ext.project_description = 'A description of your project'
+    
+	ext.project_name = "Track4J"
+	ext.project_group = "it.unibo.track4j"
+	ext.project_artifact = "track4j"
+	ext.project_version = "1.0.0"
+	
+	ext.project_license = 'The Apache Software License, Version 2.0' // the full license name
+    ext.project_license_tag = 'Apache-2.0' // the license tag name
+    ext.project_license_url = 'https://www.apache.org/licenses/LICENSE-2.0.txt' // link to the license
+	
+	repositories {
+	    // Use jcenter for resolving your dependencies.
+	    jcenter()
+	    mavenCentral()
+	}
+	dependencies {
+        //classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
+group project_group
+version project_version
+
+allprojects {
+	apply plugin: 'java-library'
+	apply plugin: 'java'
+	apply plugin: 'maven'
+	apply plugin: 'maven-publish'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task fatJar(type: Jar) {
+	classifier = 'all'
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+configurations {
+    localCompile.transitive = false
+    compile.extendsFrom(localCompile)
+}
+
+
+
+bintray {
+    user = 'giulianini'
+    key = 'c074fbf5bd198e158163c8a19aa12efaa3806863'
+    publications = ['maven']
+    pkg {
+        repo = 'maven'
+        name = project_name
+        desc = project_description
+        licenses = [project_license_tag]
+        publicDownloadNumbers = true
+        websiteUrl = "https://github.com/$your_github_name/$project_name"
+        issueTrackerUrl = "https://github.com/$your_github_name/$project_name/issues"
+        vcsUrl = "https://github.com/$your_github_name/${project_name}.git"
+        githubRepo = "$your_github_name/$project_name"
+        version {
+            name = project_version
+            vcsTag = project_version
+            released = new Date()
+            gpg {
+                sign = true
+            }
+        }
+    }
+}
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            groupId project_group
+            artifactId project_artifact
+            version project_version
+            artifact sourcesJar
+            artifact javadocJar
+            artifact fatJar
+        }
+    }
+}
+
+
+repositories {
+    mavenCentral()
+   	jcenter()
+   	flatDir {
+   	    dir 'libs'
+   	}
+
+}
+
+dependencies {
+	//compile all jar in libs
+	localCompile fileTree(dir: 'libs', include: '*.jar')
+    compile 'org.apache.commons:commons-math3:3.6.1'
+    compile 'com.google.guava:guava:23.0'
+    testCompile 'junit:junit:4.12'
+    compile 'com.github.haifengl:smile-core:1.5.1'
+    compile 'com.jfoenix:jfoenix:8.0.3' // Java 8
+    compile 'org.kordamp.ikonli:ikonli-material-pack:2.1.1'
+    compile 'org.kordamp.ikonli:ikonli-javafx:2.1.1'
+    compile 'eu.hansolo.enzo:Enzo:0.3.6'
+    compile 'com.google.code.gson:gson:2.8.4'
+    
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs= ["src/main/java"]
+        }
+        resources {
+            srcDirs= ["src/main/resources"	
+            ]
+        }
+        
+    }
+}
+
+jar {
+    doFirst {
+        manifest {
+            if (!configurations.compile.isEmpty()) {
+                attributes(
+                        'Class-Path': configurations.localCompile.collect{it.getName()}.join(' '))
+            }
+        }
+    }
+    from {
+        configurations.localCompile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+

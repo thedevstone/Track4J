@@ -15,4 +15,6 @@ include 'api'
 include 'services:webservice'
 */
 
-rootProject.name = 'Track4J'
+rootProject.name = 'Track4J_Project'
+include 'Track4J'
+include 'Demo'
