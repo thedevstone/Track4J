@@ -50,8 +50,6 @@ public interface View {
      * Get the tracker.
      *
      * @return the {@link Tracking} tracker
-     *
-     * @return
      */
     Tracking getTracker();
 
