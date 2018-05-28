@@ -31,7 +31,7 @@ import track4j.sensor.Joint;
  */
 class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
     static {
-        FileManager.loadNativeLibraries();
+        FileManager.createLibSubFolder();
     }
     private KinectObserver kinect;
     private boolean first;

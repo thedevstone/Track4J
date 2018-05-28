@@ -15,16 +15,9 @@
  *******************************************************************************/
 package track4j.core.file;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.common.io.Files;
 
 /**
  * Class dedicated to File managing.
@@ -65,49 +58,13 @@ public final class FileManager {
         }
     }
 
-    // LIST FILE IN NATIVE
-    private static List<String> getResourceFiles(final String path) throws IOException {
-        final List<String> filenames = new ArrayList<>();
-        try (InputStream in = FileManager.class.getResourceAsStream(path);
-                BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-            String resource;
-
-            while ((resource = br.readLine()) != null) { // NOPMD
-                filenames.add(resource);
-            }
-        }
-        return filenames;
-    }
-
     /**
-     * Put the natives in filesystem.
+     * crate subfolders.
+     *
      */
-    public static void loadNativeLibraries() {
-        FileManager.createLibSubFolder(LibPaths.NATIVE_DIR);
-
-        List<String> files = null;
-        try {
-            files = FileManager.getResourceFiles("/native");
-        } catch (final IOException e1) {
-            e1.printStackTrace();
-        }
-
-        for (final String file : files) {
-            final String libToLoad = FileManager.crateOrGetLibDir() + OsUtils.getSeparator()
-                    + LibPaths.NATIVE_DIR.getDirName() + OsUtils.getSeparator() + file;
-            try {
-                Files.copy(new File(FileManager.class.getResource("/native/" + file).getFile()), new File(libToLoad));
-
-            } catch (final IOException e) {
-                System.out.println("Errore copia dll");
-            }
-
-        }
-
-    }
-
-    private static void createLibSubFolder(final LibPaths path) {
-        final String tempPath = FileManager.crateOrGetLibDir() + OsUtils.getSeparator() + path.getDirName();
+    public static void createLibSubFolder() {
+        final String tempPath = FileManager.crateOrGetLibDir() + OsUtils.getSeparator()
+                + LibPaths.NATIVE_DIR.getDirName();
         if (!java.nio.file.Files.exists(java.nio.file.Paths.get(tempPath))) {
             try {
                 java.nio.file.Files.createDirectories(java.nio.file.Paths.get(tempPath));
@@ -115,19 +72,20 @@ public final class FileManager {
                 System.out.println("Cannot create lib directory");
             }
         }
-        if (path.equals(LibPaths.NATIVE_DIR)) {
-            try {
-                FileManager.addDir(tempPath);
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
+
+        try {
+            FileManager.addDir(tempPath);
+        } catch (final IOException e) {
+
+            e.printStackTrace();
         }
+
     }
 
     /**
-     * Get the library directory.
+     * Get lib directory.
      *
-     * @return the directory
+     * @return the {@link String} directory
      */
     public static String crateOrGetLibDir() {
         if (FileManager.libDir == null) {
