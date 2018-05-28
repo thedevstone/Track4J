@@ -7,7 +7,7 @@ buildscript {
 	ext.project_name = "Track4J"
 	ext.project_group = "it.unibo.track4j"
 	ext.project_artifact = "track4j"
-	ext.project_version = "1.0.2"
+	ext.project_version = "1.0.0"
 	
 	ext.project_license = 'The Apache Software License, Version 2.0' // the full license name
     ext.project_license_tag = 'Apache-2.0' // the license tag name
