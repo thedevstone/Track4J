@@ -47,22 +47,22 @@ if (!project.hasProperty('bintrayUsername')) ext.bintrayUsername = ''
 if (!project.hasProperty('bintrayApiKey')) ext.bintrayApiKey = ''
 
 bintray {
-    user = bintrayUsername
-    key = bintrayApiKey
+    user = project.bintrayUsername
+    key = project.bintrayApiKey
     publications = ['maven']
     pkg {
         repo = 'maven'
-        name = "$project_name"
-        desc = "$project_description"
-        licenses = ["$project_license_tag"]
+        name = project.project_name
+        desc = project.project_description
+        licenses = [project.project_license_tag]
         publicDownloadNumbers = true
-        websiteUrl = "https://github.com/$your_github_name/$project_name"
-        issueTrackerUrl = "https://github.com/$your_github_name/$project_name/issues"
-        vcsUrl = "https://github.com/$your_github_name/${project_name}.git"
-        githubRepo = "$your_github_name/$project_name"
+        websiteUrl = "https://github.com/$project.your_github_name/$project.project_name"
+        issueTrackerUrl = "https://github.com/$project.your_github_name/$project.project_name/issues"
+        vcsUrl = "https://github.com/$your_github_name/${project.project_name}.git"
+        githubRepo = "$your_github_name/$project.project_name"
         version {
-            name = project_version
-            vcsTag = project_version
+            name = project.project_version
+            vcsTag = project.project_version
             released = new Date()
             gpg {
                 sign = true
