@@ -3,7 +3,7 @@
 bin/
 .gradle
 .gradle/
-/build/
+build/
 gradle.properties
 
 # Ignore Gradle GUI config
