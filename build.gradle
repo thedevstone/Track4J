@@ -57,6 +57,17 @@ task fatJar(type: Jar) {
     with jar
 }
 
+configurations {
+    localCompile.transitive = false
+    compile.extendsFrom(localCompile)
+}
+
+jar {
+    from {
+        configurations.localCompile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
@@ -101,11 +112,16 @@ publishing {
 repositories {
     mavenCentral()
    	jcenter()
+   	flatDir {
+   	    
+   	    dir 'libs'
+   	}
+
 }
 
 dependencies {
 	//compile all jar in libs
-	compile fileTree(dir: 'libs', include: '*.jar')
+	localCompile fileTree(dir: 'libs', include: '*.jar')
 	
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     compile 'org.apache.commons:commons-math3:3.6.1'
@@ -128,8 +144,7 @@ sourceSets {
             srcDirs= ["src/main/java"]
         }
         resources {
-            srcDirs= ["src/main/resources",
-            		"libs",	
+            srcDirs= ["src/main/resources"	
             ]
         }
         
