@@ -1,34 +1,15 @@
 buildscript {
-	ext.your_name = 'Luca Giulianini'
-    ext.your_email = 'luca.giulianini2@studio.unibo.it'
-    ext.your_github_name = 'Giulianini'
-    ext.project_description = 'A description of your project'
-    
-	ext.project_name = "Track4J"
-	ext.project_group = "it.unibo.track4j"
-	ext.project_artifact = "track4j"
-	ext.project_version = "1.0.0"
-	
-	ext.project_license = 'The Apache Software License, Version 2.0' // the full license name
-    ext.project_license_tag = 'Apache-2.0' // the license tag name
-    ext.project_license_url = 'https://www.apache.org/licenses/LICENSE-2.0.txt' // link to the license
-	
 	repositories {
-	    // Use jcenter for resolving your dependencies.
 	    jcenter()
 	    mavenCentral()
 	}
 	dependencies {
-        //classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 plugins {
     id "com.jfrog.bintray" version "1.7.3"
 }
-
-group project_group
-version project_version
 
 allprojects {
 	apply plugin: 'java-library'
@@ -62,11 +43,12 @@ configurations {
     compile.extendsFrom(localCompile)
 }
 
-
+if (!project.hasProperty('bintrayUsername')) bintrayUsername = ''
+if (!project.hasProperty('bintrayApiKey')) bintrayApiKey = ''
 
 bintray {
-    user = 'giulianini'
-    key = 'c074fbf5bd198e158163c8a19aa12efaa3806863'
+    user = bintrayUsername
+    key = bintrayApiKey
     publications = ['maven']
     pkg {
         repo = 'maven'
@@ -104,14 +86,12 @@ publishing {
     }
 }
 
-
 repositories {
     mavenCentral()
    	jcenter()
    	flatDir {
    	    dir 'libs'
    	}
-
 }
 
 dependencies {
@@ -125,8 +105,7 @@ dependencies {
     compile 'org.kordamp.ikonli:ikonli-material-pack:2.1.1'
     compile 'org.kordamp.ikonli:ikonli-javafx:2.1.1'
     compile 'eu.hansolo.enzo:Enzo:0.3.6'
-    compile 'com.google.code.gson:gson:2.8.4'
-    
+    compile 'com.google.code.gson:gson:2.8.4' 
 }
 
 sourceSets {
@@ -135,8 +114,7 @@ sourceSets {
             srcDirs= ["src/main/java"]
         }
         resources {
-            srcDirs= ["src/main/resources"	
-            ]
+            srcDirs= ["src/main/resources"]
         }
         
     }
