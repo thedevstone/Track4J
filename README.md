@@ -17,6 +17,11 @@
 * Track4J for Java 8 - [download jar](https://bintray.com/giulianini/maven/Track4J/0.0.1)
 * Released builds are available from [Maven Central]()
 
+## Demo
+Run the demo with:
+
+    gradlew run
+
 ## Build
 To build JFoenix, execute the following command:
 
@@ -53,6 +58,7 @@ dependencies {
 ## How can I use Track4J?
 ### Set Up
 1. 	Install the [__Kinect SDK__ ](https://www.microsoft.com/en-us/download/confirmation.aspx?id=40278)
+1. 	Put __ufdw_j4k_**bit.dll_ Natives into __HOME/.Track4J/native__. Track4J will find them.
 1. 
 	* **Build**  
 	You can download the source code of the library and build it as mentioned previously. Building Track4J will generate Track4J.jar under the Track4J/build/libs folder. To use Track4J, import Track4J.jar into your project and start tracking your body :).
@@ -70,6 +76,7 @@ dependencies {
 	....});
 ```
 #### Start via UI
+
 ```java
 	final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
         final Tracking tracker = Tracker.getInstance();
@@ -79,6 +86,25 @@ dependencies {
         tracker.setOnJointTracked(new JointListener(){
 	....});
 ```
+#### Define your own UI
+
+```java
+ public class Gui extends AbstractView {
+        public Gui(Tracking tracker) {
+            super(tracker);
+            // TODO Auto-generated constructor stub
+        }
+        @Override
+        public void notifyOnFrameChange(int frame, Vector2D derivative, Vector2D path) {
+            // TODO Auto-generated method stub   
+        }
+        @Override
+        public void notifyOnFeatureVectorEvent() {
+            // TODO Auto-generated method stub   
+        }
+    }
+```
+
 
 ## Supported sensors
 
