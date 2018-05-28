@@ -61,8 +61,8 @@ bintray {
         vcsUrl = "https://github.com/$your_github_name/${project.project_name}.git"
         githubRepo = "$your_github_name/$project.project_name"
         version {
-            name = project.project_version
-            vcsTag = project.project_version
+            name = version //project.project_version
+            vcsTag = version //project.project_version
             released = new Date()
             gpg {
                 sign = true
@@ -78,7 +78,7 @@ publishing {
             from components.java
             groupId project_group
             artifactId project_artifact
-            version project_version
+            version version //project_version
             artifact sourcesJar
             artifact javadocJar
             artifact fatJar
