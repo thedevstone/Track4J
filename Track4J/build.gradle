@@ -16,7 +16,12 @@ allprojects {
 	apply plugin: 'java'
 	apply plugin: 'maven'
 	apply plugin: 'maven-publish'
+	apply plugin: 'signing'
 }
+
+group = project_group
+archivesBaseName = project_artifact
+version = version
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
@@ -132,5 +137,55 @@ jar {
     from {
         configurations.localCompile.collect { it.isDirectory() ? it : zipTree(it) }
     }
+}
+
+signing {
+    sign configurations.archives
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+if (!project.hasProperty('ossrhUsername')) ext.ossrhUsername = ''
+if (!project.hasProperty('ossrhPassword')) ext.ossrhPassword = ''
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name project_name
+        packaging 'jar'
+        // optionally artifactId can be defined here 
+        description project_description
+        url "https://github.com/$project.your_github_name/$project.project_name"
+
+        licenses {
+          license {
+            name 'The Apache License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+
+        developers {
+          developer {
+            id 'giulianini'
+            name 'Luca Giulianini'
+            email 'luca.giulianini2@studio.unibo.it'
+          }
+        }
+      }
+    }
+  }
 }
 
