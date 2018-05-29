@@ -1,11 +1,4 @@
 language: java
 
 script:
-    - gradle printVersion
-
-deploy:
-  - provider: script
-    script: 
-        - gradle bintrayUpload
-    on:
-      branch: travis 
+  - 'if [ "$TRAVIS_BRANCH" = "master" ]; then bash travis_build.sh; fi'
