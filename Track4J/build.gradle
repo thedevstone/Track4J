@@ -48,10 +48,10 @@ configurations {
     compile.extendsFrom(localCompile)
 }
 
-//BINTRAY
-bintray {
 	if (!project.hasProperty('bintrayUsername')) ext.bintrayUsername = ''
 	if (!project.hasProperty('bintrayApiKey')) ext.bintrayApiKey = ''
+//BINTRAY
+bintray {
     user = project.bintrayUsername
     key = project.bintrayApiKey
     
