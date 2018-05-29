@@ -1,8 +1,0 @@
-startingVersion = '0.1.0'
-preRelease {
-    startingVersion = 'alpha.0'
-    pattern = /alpha/
-    bump = {
-        "alpha.${((it - ~/^alpha\./) as int) + 1}"
-    }
-}
