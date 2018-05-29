@@ -1,4 +1,5 @@
 language: java
 
 script:
-    - gradle build
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash travis_build.sh; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash travis_build_pull_request.sh; fi'

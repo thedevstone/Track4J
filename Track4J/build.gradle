@@ -48,26 +48,33 @@ configurations {
     compile.extendsFrom(localCompile)
 }
 
-if (!project.hasProperty('bintrayUsername')) ext.bintrayUsername = ''
-if (!project.hasProperty('bintrayApiKey')) ext.bintrayApiKey = ''
-
+	//if (!project.hasProperty('bintrayUsername')) ext.bintrayUsername = ''
+	//if (!project.hasProperty('bintrayApiKey')) ext.bintrayApiKey = ''
+//BINTRAY
 bintray {
-    user = project.bintrayUsername
-    key = project.bintrayApiKey
+	user = project.hasProperty('bintrayUsername') ? project.property('bintrayUsername') : System.getenv('BINTRAY_USER')
+	key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
+    //user = project.bintrayUsername
+    //key = project.bintrayApiKey
+    
+    
     publications = ['maven']
     pkg {
         repo = 'maven'
         name = project.project_name
         desc = project.project_description
         licenses = [project.project_license_tag]
+        labels = ['track4j', 'sensor', 'kinect']
         publicDownloadNumbers = true
         websiteUrl = "https://github.com/$project.your_github_name/$project.project_name"
         issueTrackerUrl = "https://github.com/$project.your_github_name/$project.project_name/issues"
         vcsUrl = "https://github.com/$your_github_name/${project.project_name}.git"
         githubRepo = "$your_github_name/$project.project_name"
+    	githubReleaseNotesFile = 'docs/releasenotes.md'
         version {
             name = version //project.project_version
             vcsTag = version //project.project_version
+            desc = 'Release'
             released = new Date()
             gpg {
                 sign = true
@@ -84,10 +91,65 @@ publishing {
             groupId project_group
             artifactId project_artifact
             version version //project_version
-            artifact sourcesJar
-            artifact javadocJar
-            artifact fatJar
-        }
+            
+            
+            artifact sourcesJar {
+	        	classifier 'sources'
+	      	}
+	
+		  	artifact javadocJar {
+	        	classifier 'javadoc'
+	      	}
+	      	
+	      	artifact fatJar {
+	        	classifier 'all'
+	      	}
+            
+            
+            pom {
+		        packaging 'jar'
+		        withXml {
+		          	asNode().children().last() + {
+						def builder = delegate
+						
+						// maven central publishing mandatories
+						builder.name project.project_name
+						builder.description project.project_description
+						builder.url "https://github.com/$project.your_github_name/$project.project_name"
+						
+						builder.licenses {
+						    builder.license {
+						      builder.name 'The Apache Software License, Version 2.0'
+						      builder.url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+						      builder.distribution 'repo'
+						    }
+						}
+						builder.scm {
+						    builder.url 'scm:svn:http://github.com/Giulianini/Track4J'
+						    builder.connection 'scm:svn:http://github.com/Giulianini/Track4J.git'
+						    builder.developerConnection 'scm:svn:ssh://github.com/Giulianini/Track4J.git'
+						}
+						builder.developers {
+						    builder.developer {
+						      builder.name 'Luca Giulianini'
+						      builder.email 'luca.giulianini@studio.unibo.it'
+						    }
+						
+						}
+						
+						// maven central publishing optionals
+						builder.issueManagement {
+						  builder.system 'github'
+						  builder.url 'https://github.com/p6spy/p6spy/issues'
+						}
+						builder.ciManagement {
+						  builder.system 'Travis CI'
+						  builder.url 'https://travis-ci.org/p6spy/p6spy'
+						}
+		        	}		    
+        		}
+    		}
+    	}
     }
 }
 
@@ -148,52 +210,4 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-if (!project.hasProperty('ossrhUsername')) ext.ossrhUsername = ''
-if (!project.hasProperty('ossrhPassword')) ext.ossrhPassword = ''
-
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
-
-      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
-      
-
-      pom.project {
-        name project_name
-        packaging 'jar'
-        // optionally artifactId can be defined here 
-        description project_description
-        url "https://github.com/$project.your_github_name/$project.project_name"
-
-		 scm {
-          connection 'scm:svn:http://github.com/Giulianini/Track4J'
-          developerConnection 'scm:svn:https://github.com/Giulianini/Track4J'
-          url 'http://github.com/Giulianini/Track4J'
-      }
-
-        licenses {
-          license {
-            name 'The Apache License, Version 2.0'
-            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-          }
-        }
-
-        developers {
-          developer {
-            id 'giulianini'
-            name 'Luca Giulianini'
-            email 'luca.giulianini2@studio.unibo.it'
-          }
-        }
-      }
-    }
-  }
-}
 
