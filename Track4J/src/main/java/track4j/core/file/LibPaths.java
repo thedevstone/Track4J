@@ -43,5 +43,4 @@ enum LibPaths {
     public String getDirName() {
         return this.pathNative;
     }
-
 }
