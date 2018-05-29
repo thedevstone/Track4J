@@ -57,6 +57,7 @@ bintray {
     //user = project.bintrayUsername
     //key = project.bintrayApiKey
     
+    
     publications = ['maven']
     pkg {
         repo = 'maven'
