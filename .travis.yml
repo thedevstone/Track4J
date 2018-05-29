@@ -1,4 +1,4 @@
 language: java
 
 script:
-  - 'if [ "$TRAVIS_BRANCH" = "master" ]; then bash travis_build.sh; fi'
+  - 'if [ "$TRAVIS_BRANCH" = "master" ]; then bash travis_build.sh; fi' 
