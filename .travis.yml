@@ -1,4 +1,5 @@
 language: java
 
 script:
+  - echo $TRAVIS_BRANCH
   - 'if [ "$TRAVIS_BRANCH" = "snapshot" ]; then bash travis_build.sh; fi' 

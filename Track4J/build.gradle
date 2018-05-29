@@ -165,7 +165,7 @@ publishing {
             from components.java
             groupId project_group
             artifactId project_artifact
-            version version //project_version
+            version project.project_version
             
             
             artifact sourcesJar {

@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e
-gradle printVersion || gradle publish
+gradle publish || gradle printVersion
