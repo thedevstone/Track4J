@@ -1,3 +1,9 @@
 subprojects {
     version = rootProject.version
 }
+
+tag {
+    message {
+        "version: ${version}"
+    }
+}
