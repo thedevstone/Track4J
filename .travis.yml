@@ -8,4 +8,4 @@ deploy:
     script: 
         - gradle bintrayUpload
     on:
-      branch: travis
+      branch: travis 
