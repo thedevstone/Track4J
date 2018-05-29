@@ -1,7 +1,6 @@
 language: java
 
 script:
-    - gradle build
     - gradle printVersion
 
 deploy:
