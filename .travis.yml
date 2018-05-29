@@ -3,3 +3,4 @@ language: java
 script:
     - gradle build
     - gradle printVersion
+    - gradle bintrayUpdate
