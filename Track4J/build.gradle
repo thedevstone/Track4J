@@ -163,6 +163,12 @@ uploadArchives {
       snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
         authentication(userName: ossrhUsername, password: ossrhPassword)
       }
+      
+      scm {
+          connection 'scm:svn:http://github.com/Giulianini/Track4J'
+          developerConnection 'scm:svn:https://github.com/Giulianini/Track4J'
+          url 'http://github.com/Giulianini/Track4J'
+        }
 
       pom.project {
         name project_name
