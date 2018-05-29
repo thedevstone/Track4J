@@ -1,5 +1,12 @@
 language: java
 
 script:
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash travis_build.sh; fi'
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash travis_build_pull_request.sh; fi'
+    - gradle build
+    - gradle printVersion
+
+deploy:
+  - provider: script
+    script: 
+        - gradle bintrayUpload
+    on:
+      branch: travis
