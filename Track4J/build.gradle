@@ -111,17 +111,17 @@ bintray {
         name = project.project_name
         desc = project.project_description
         licenses = [project.project_license_tag]
-        labels = ['track4j', 'sensor', 'kinect']
+        labels = ['track4j', 'sensor', 'kinect', 'tracking']
         publicDownloadNumbers = true
         websiteUrl = "https://github.com/$project.your_github_name/$project.project_name"
         issueTrackerUrl = "https://github.com/$project.your_github_name/$project.project_name/issues"
         vcsUrl = "https://github.com/$your_github_name/${project.project_name}.git"
         githubRepo = "$your_github_name/$project.project_name"
-    	githubReleaseNotesFile = 'docs/releasenotes.md'
+    	githubReleaseNotesFile = 'Releasenotes.md'
         version {
             name = project.project_version
             vcsTag = project.project_version
-            desc = 'Release'
+            desc =  project.project_version
             released = new Date()
             gpg {
                 sign = true
