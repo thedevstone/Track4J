@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/Giulianini/Track4J.svg?branch=master)](https://travis-ci.org/Giulianini/Track4J)
 [![PyPI - License](https://img.shields.io/github/license/Giulianini/Track4J.svg)](https://github.com/Giulianini/Track4J/blob/master/LICENSE.txt)
 [![Bintray](https://img.shields.io/bintray/v/giulianini/maven/Track4J.svg)](https://bintray.com/giulianini/maven/Track4J/_latestVersion)
-[![Coverage Status](https://coveralls.io/repos/github/Giulianini/Track4J/badge.svg?branch=master)](https://coveralls.io/github/Giulianini/Track4J?branch=master)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.giulianini.track4j/track4j.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A"com.github.giulianini.track4j"%20AND%20a%3A"track4j")
 ![GitHub issues](https://img.shields.io/github/issues/Giulianini/Track4J.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Giulianini/Track4J.svg)
@@ -15,8 +14,14 @@
     <img src="/pic/Track4J.png">
 </h1>
 
-* Track4J for Java 8 - [download jar](https://bintray.com/giulianini/maven/Track4J/0.0.1)
-* Released builds are available from [Maven Central]()
+
+## Download
+* Released builds are available from - [Bintray](https://bintray.com/giulianini/maven/Track4J/_latestVersion)
+* Released builds are available from [Maven Central](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A"com.github.giulianini.track4j"%20AND%20a%3A"track4j")
+* Snapshot builds are available from [Artifactory](http://oss.jfrog.org/oss-snapshot-local/com/github/giulianini/track4j/track4j/0.1.6-SNAPSHOT/)
+
+## Javadocs 
+If you need to access the documentation for any stable version, [javadoc.io](https://www.javadoc.io/doc/com.github.giulianini.track4j/track4j/) is probably the right place to search in.
 
 ## Demo
 Run the demo with:
@@ -32,14 +37,14 @@ To build JFoenix, execute the following command:
 
 ### Gradle
 #### How to Include In Gradle Project
-```
+```gradle
 repositories {
     mavenCentral()
     jCenter()
 }
 ```
 Reference the repository from this location using:
-```
+```gradle
 dependencies {
     compile 'com.github.giulianini:track4j:1.0.0'
 }
