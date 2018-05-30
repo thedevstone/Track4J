@@ -9,6 +9,7 @@
 ---
 
 # Track4J
+
 ## A simple framework for body tracking in Java.
 
 <h1 align="center">
@@ -37,6 +38,7 @@ To build JFoenix, execute the following command:
 **NOTE** : Track4j uses JavaFx so it may not work on older version of Java.
 
 ### Gradle
+
 #### How to Include In Gradle Project
 ```gradle
 repositories {
@@ -52,6 +54,7 @@ dependencies {
 ```
 
 ### Maven
+
 #### How to Include In Maven Project
 ```xml
 <dependency>
@@ -63,6 +66,7 @@ dependencies {
 ```
 
 ### Ivy
+
 #### How to Include In Ivy Project
 ```xml
 <dependency org='com.github.giulianini' name='track4j' rev='1.0.0'>
@@ -71,6 +75,7 @@ dependencies {
 ```
 
 ## How can I use Track4J?
+
 ### Set Up
 1. 	Install the [__Kinect SDK__ ](https://www.microsoft.com/en-us/download/confirmation.aspx?id=40278)
 1. 	Put __ufdw_j4k_**bit.dll_ Natives into __HOME/.Track4J/native__. Track4J will find them.
@@ -81,6 +86,7 @@ dependencies {
 	Include the dependency for your build system.
  
 ### Code
+
 #### Start the Tracker
 ```java
 	final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
