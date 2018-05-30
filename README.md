@@ -19,8 +19,8 @@
 
 ## Download
 * Released builds are available from - [Bintray](https://bintray.com/giulianini/maven/Track4J/_latestVersion)
-* Released builds are available from [Maven Central](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A"com.github.giulianini.track4j"%20AND%20a%3A"track4j")
-* Snapshot builds are available from [Artifactory](http://oss.jfrog.org/oss-snapshot-local/com/github/giulianini/track4j/track4j/0.1.6-SNAPSHOT/)
+* Released builds are available from - [Maven Central](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A"com.github.giulianini.track4j"%20AND%20a%3A"track4j")
+* Snapshot builds are available from - [Artifactory](http://oss.jfrog.org/oss-snapshot-local/com/github/giulianini/track4j/track4j/0.1.6-SNAPSHOT/)
 
 ## Javadocs 
 If you need to access the documentation for any stable version, [javadoc.io](https://www.javadoc.io/doc/com.github.giulianini.track4j/track4j/) is probably the right place to search in.
@@ -78,6 +78,7 @@ dependencies {
 
 ### Set Up
 1. 	Install the [__Kinect SDK__ ](https://www.microsoft.com/en-us/download/confirmation.aspx?id=40278)
+1. 	Download natives - [Natives dll for Kinect](https://drive.google.com/open?id=1Dpvs71O2dN6AxnTrMUGLAIDJkp0y8YXD)
 1. 	Put __ufdw_j4k_**bit.dll_ Natives into __HOME/.Track4J/native__. Track4J will find them.
 1. 
 	* **Build**  
