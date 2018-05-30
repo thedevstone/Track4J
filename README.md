@@ -7,6 +7,7 @@
 ![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/Giulianini/Track4J.svg)
 ---
+
 # Track4J
 ## A simple framework for body tracking in Java.
 
