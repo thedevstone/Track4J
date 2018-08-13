@@ -12,9 +12,6 @@
 
 ## A simple framework for body tracking in Java.
 
-<h1 align="center">
-    <img src="/pic/Track4J.png">
-</h1>
 
 
 ## Download
